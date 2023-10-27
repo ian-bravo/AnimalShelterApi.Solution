@@ -16,31 +16,47 @@ namespace AnimalShelterApi.Controllers
     }
 
     [HttpGet]
-    public async Task<List<Dog>> Get(string name, string size, string sex, int minimumAge)
+    public async Task<ActionResult<PagedList<Dog>>> Get(int dogId, int pageNumber = 1, int pageSize = 10)
     {
-      IQueryable<Dog> query = _db.Dogs.AsQueryable();
+    
+      var dogs = _db.Dogs.Where(m => m.DogId == dogId);
 
-      if (name != null)
+      var pagedDogs = await PagedList<Dog>.CreateAsync(dogs, pageNumber, pageSize);
+
+      if (pagedDogs.Count == 0)
       {
-        query = query.Where(e => e.Name == name);
+        return NotFound();
       }
 
-      if (size != null)
-      {
-        query = query.Where(e => e.Size == size);
-      }
-
-      if (sex != null)
-      {
-        query = query.Where(e => e.Sex == sex);
-      }
-
-      if (minimumAge > 0)
-      {
-        query = query.Where(e => e.Age >= minimumAge);
-      }
-      return await query.ToListAsync();
+      return pagedDogs;
     }
+
+    // [HttpGet]
+    // public async Task<List<Dog>> Get(string name, string size, string sex, int minimumAge)
+    // {
+    //   IQueryable<Dog> query = _db.Dogs.AsQueryable();
+
+    //   if (name != null)
+    //   {
+    //     query = query.Where(e => e.Name == name);
+    //   }
+
+    //   if (size != null)
+    //   {
+    //     query = query.Where(e => e.Size == size);
+    //   }
+
+    //   if (sex != null)
+    //   {
+    //     query = query.Where(e => e.Sex == sex);
+    //   }
+
+    //   if (minimumAge > 0)
+    //   {
+    //     query = query.Where(e => e.Age >= minimumAge);
+    //   }
+    //   return await query.ToListAsync();
+    // }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Dog>> GetDog(int id)
