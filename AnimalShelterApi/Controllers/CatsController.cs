@@ -16,9 +16,30 @@ namespace AnimalShelterApi.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Cat>>> Get()
+    public async Task<List<Cat>> Get(string name, string size, string sex, int minimumAge)
     {
-      return await _db.Cats.ToListAsync();
+      IQueryable<Cat> query = _db.Cats.AsQueryable();
+
+      if (name != null)
+      {
+        query = query.Where(e => e.Name == name);
+      }
+
+      if (size != null)
+      {
+        query = query.Where(e => e.Size == size);
+      }
+
+      if (sex != null)
+      {
+        query = query.Where(e => e.Sex == sex);
+      }
+
+      if (minimumAge > 0)
+      {
+        query = query.Where(e => e.Age >= minimumAge);
+      }
+      return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
@@ -51,7 +72,7 @@ namespace AnimalShelterApi.Controllers
       }
 
       _db.Cats.Update(cat);
-      
+
       try
       {
         await _db.SaveChangesAsync();
