@@ -22,7 +22,7 @@ namespace AnimalShelterApi.Controllers
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<IEnumerable<Cat>>> GetCat(int id)
+    public async Task<ActionResult<Cat>> GetCat(int id)
     {
       Cat cat = await _db.Cats.FindAsync(id);
 
