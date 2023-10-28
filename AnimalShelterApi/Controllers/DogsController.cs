@@ -21,7 +21,7 @@ namespace AnimalShelterApi.Controllers
     
       var dogs = _db.Dogs.Where(m => m.DogId == dogId);
 
-      var pagedDogs = await PagedList<Dog>.CreateAsync(dogs, pageNumber, pageSize);
+      var pagedDogs = await PagedList<Dog>.ToPagedListAsync(dogs, pageNumber, pageSize);
 
       if (pagedDogs.Count == 0)
       {
