@@ -15,48 +15,48 @@ namespace AnimalShelterApi.Controllers
       _db = db;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<PagedList<Dog>>> Get(int dogId, int pageNumber = 1, int pageSize = 10)
-    {
+    // [HttpGet]
+    // public async Task<ActionResult<PagedList<Dog>>> Get(int dogId, int pageNumber = 1, int pageSize = 10)
+    // {
     
-      var dogs = _db.Dogs.Where(m => m.DogId == dogId);
+    //   var dogs = _db.Dogs.Where(m => m.DogId == dogId);
 
-      var pagedDogs = await PagedList<Dog>.ToPagedListAsync(dogs, pageNumber, pageSize);
+    //   var pagedDogs = await PagedList<Dog>.ToPagedListAsync(dogs, pageNumber, pageSize);
 
-      if (pagedDogs.Count == 0)
+    //   if (pagedDogs.Count == 0)
+    //   {
+    //     return NotFound();
+    //   }
+
+    //   return pagedDogs;
+    // }
+
+    [HttpGet]
+    public async Task<List<Dog>> Get(string name, string size, string sex, int minimumAge)
+    {
+      IQueryable<Dog> query = _db.Dogs.AsQueryable();
+
+      if (name != null)
       {
-        return NotFound();
+        query = query.Where(e => e.Name == name);
       }
 
-      return pagedDogs;
+      if (size != null)
+      {
+        query = query.Where(e => e.Size == size);
+      }
+
+      if (sex != null)
+      {
+        query = query.Where(e => e.Sex == sex);
+      }
+
+      if (minimumAge > 0)
+      {
+        query = query.Where(e => e.Age >= minimumAge);
+      }
+      return await query.ToListAsync();
     }
-
-    // [HttpGet]
-    // public async Task<List<Dog>> Get(string name, string size, string sex, int minimumAge)
-    // {
-    //   IQueryable<Dog> query = _db.Dogs.AsQueryable();
-
-    //   if (name != null)
-    //   {
-    //     query = query.Where(e => e.Name == name);
-    //   }
-
-    //   if (size != null)
-    //   {
-    //     query = query.Where(e => e.Size == size);
-    //   }
-
-    //   if (sex != null)
-    //   {
-    //     query = query.Where(e => e.Sex == sex);
-    //   }
-
-    //   if (minimumAge > 0)
-    //   {
-    //     query = query.Where(e => e.Age >= minimumAge);
-    //   }
-    //   return await query.ToListAsync();
-    // }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Dog>> GetDog(int id)
