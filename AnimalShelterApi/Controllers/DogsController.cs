@@ -15,6 +15,7 @@ namespace AnimalShelterApi.Controllers
       _db = db;
     }
 
+    //PAGINATIN WIP ~~~~~~~~~~~~~~~~~~
     // [HttpGet]
     // public async Task<ActionResult<PagedList<Dog>>> Get(int dogId, int pageNumber = 1, int pageSize = 10)
     // {
@@ -30,6 +31,7 @@ namespace AnimalShelterApi.Controllers
 
     //   return pagedDogs;
     // }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     [HttpGet]
     public async Task<List<Dog>> Get(string name, string size, string sex, int minimumAge)
