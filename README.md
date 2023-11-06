@@ -1,10 +1,10 @@
 # _Animal Shelter API_
 
-#### By _**Ian Bravo**_
+### By _**Ian Bravo**_
 
-#### _This web API will list the available cats and dogs at the local animal shelter._
+### _This web API will list the available cats and dogs at the local animal shelter._
 
-## Technologies Used
+# Technologies Used
 
 * _C# 10.0_
 * _HtmL_
@@ -16,11 +16,11 @@
 * _MySQL Community Server_
 
 
-## Description
+# Description
 
 This C# web API will allow the local animal shelter to design any front-end application using this back-end application. This web API has many different endpoints as stated below. All CRUD function is implemented. 
 
-## Setup/Installation Requirements
+# Setup/Installation Requirements
 
 Installing/Configuring MySQL:
 
@@ -69,7 +69,7 @@ Launch the API:
 2. Run the following command to grant access for the browser/Postman to use the API:      
   `$ dotnet run`
 
-## API Documentation
+# API Documentation
 Explore the API endpoints via Postman.
 
 ### Pagination:
@@ -92,50 +92,31 @@ GET /api/{component}/{id}
 PUT /api/{component}/{id}
 DELETE /api/{component}/{id}
 ```
-
-#### Example GET query:
-```
-https://localhost:5000/api/dogs/2
-```
-
-#### Sample JSON Response:
-```
-{
-        "dogId": 2,
-        "name": "Winky",
-        "size": "Small",
-        "sex": "Male",
-        "age": 3
-    }
-```
-
 ----------------------------------------------------------------
 
-### Cats
+## Cats
 
-#### Http Request:
+#### GET Http Requests:
 ```
 GET http://localhost:5000/api/cats
 GET http://localhost:5000/api/cats/{id}
-POST http://localhost:5000/api/cats
-PUT http://localhost:5000/api/cats/{id}
-DELETE http://localhost:5000/api/cats/{id}
 ```
 
-#### Path Parameters:
+#### Optional GET Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| name | string | none | true | Return matches by name.
-| size | string | none | true | Return any cat by size description. |
-| sex | string | none | true | Return any cat by sex. |
-| age | int | none | true | Return any cat with a minimum age. |
+| name | string | none | false | Return matches by name.
+| size | string | none | false | Return any cat by size description. |
+| sex | string | none | false | Return any cat by sex. |
+| minimumAge* | int | none | false | Return any cat with a minimum age. |
+*search query for age
 
 #### Example GET query:
 ```
 http://localhost:5000/api/cats?sex=Female&minimumAge=5
 ```
 
-#### Sample JSON Response:
+#### Sample GET JSON Response:
 ```
 [
     {
@@ -155,32 +136,122 @@ http://localhost:5000/api/cats?sex=Female&minimumAge=5
 ]
 ```
 ----------------------------------------------------------------
+#### POST Http Requests:
+```
+POST http://localhost:5000/api/cats
+```
 
-### Dogs
+#### POST Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| name | string | none | true | Creates a name.
+| size | string | none | true | Creates a size description. |
+| sex | string | none | true | Creates a sex description. |
+| age | int | none | false | Creates an age description. Defaults the age to zero. |
 
-#### Http Request:
+#### Example POST:
+```
+http://localhost:5000/api/cats/
+```
+```
+{
+    "name": "Tarsha",
+    "size": "Small",
+    "sex": "Female",
+    "age": 9
+}
+```
+
+#### Sample POST JSON Response:
+```
+{
+    "catId": 7,
+    "name": "Tarsha",
+    "size": "Small",
+    "sex": "Female",
+    "age": 9
+}
+```
+----------------------------------------------------------------
+#### PUT Http Requests:
+```
+PUT http://localhost:5000/api/cats/{id}
+```
+
+#### PUT Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| catId | int | none | true | Assigned Id to animal.
+| name | string | none | true | Updates name.
+| size | string | none | true | Updates size description. |
+| sex | string | none | true | Updates sex description. |
+| age | int | none | false | Updates an age description. Defaults to zero if left blank. |
+
+#### Example PUT request:
+```
+http://localhost:5000/api/cats/7/
+```
+```
+{
+    "catId": 7,
+    "name": "Tarsha",
+    "size": "Large",
+    "sex": "Female",
+    "age": 10
+}
+```
+
+#### Sample PUT Response:
+```
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+
+----------------------------------------------------------------
+
+#### DELETE Http Requests:
+```
+DELETE http://localhost:5000/api/cats/{id}
+```
+
+#### DELETE Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| catId | int | none | true | Assigned Id to animal.
+
+#### Example DELETE request:
+```
+http://localhost:5000/api/cats/7/
+```
+
+#### Sample DELETE Response:
+```
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+
+----------------------------------------------------------------
+## Dogs
+
+#### GET Http Requests:
 ```
 GET http://localhost:5000/api/dogs
 GET http://localhost:5000/api/dogs/{id}
-POST http://localhost:5000/api/dogs
-PUT http://localhost:5000/api/dogs/{id}
-DELETE http://localhost:5000/api/dogs/{id}
 ```
 
-#### Path Parameters:
+#### Optional GET Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| name | string | none | true | Return matches by name.
-| size | string | none | true | Return any dog by size description. |
-| sex | string | none | true | Return any dog by sex. |
-| age | int | none | true | Return any dog with a minimum age. |
+| name | string | none | false | Return matches by name.
+| size | string | none | false | Return any dog by size description. |
+| sex | string | none | false | Return any dog by sex. |
+| minimumAge* | int | none | false | Return any dog with a minimum age. |
+*search query for age
 
 #### Example GET query:
 ```
 http://localhost:5000/api/dogs?sex=Female&minimumAge=5
 ```
 
-#### Sample JSON Response:
+#### Sample GET JSON Response:
 ```
 [
     {
@@ -199,6 +270,100 @@ http://localhost:5000/api/dogs?sex=Female&minimumAge=5
     }
 ]
 ```
+----------------------------------------------------------------
+
+#### POST Http Requests:
+```
+POST http://localhost:5000/api/dogs
+```
+
+#### POST Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| name | string | none | true | Creates a name.
+| size | string | none | true | Creates a size description. |
+| sex | string | none | true | Creates a sex description. |
+| age | int | none | false | Creates an age description. Defaults the age to zero. |
+
+#### Example POST:
+```
+http://localhost:5000/api/dogs/
+```
+```
+{
+    "name": "Bumblebee",
+    "size": "Small",
+    "sex": "Male",
+    "age": 1
+}
+```
+
+#### Sample POST JSON Response:
+```
+{
+    "dogId": 11,
+    "name": "Bumblebee",
+    "size": "Small",
+    "sex": "Male",
+    "age": 1
+}
+```
+----------------------------------------------------------------
+#### PUT Http Requests:
+```
+PUT http://localhost:5000/api/dogs/{id}
+```
+
+#### PUT Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| dogId | int | none | true | Assigned Id to animal.
+| name | string | none | true | Updates name.
+| size | string | none | true | Updates size description. |
+| sex | string | none | true | Updates sex description. |
+| age | int | none | false | Updates an age description. Defaults to zero if left blank. |
+
+#### Example PUT request:
+```
+http://localhost:5000/api/dogs/11/
+```
+```
+{
+    "dogId": 11,
+    "name": "Bumblebee",
+    "size": "Large",
+    "sex": "Female",
+    "age": 12
+}
+```
+
+#### Sample PUT Response:
+```
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+----------------------------------------------------------------
+
+#### DELETE Http Requests:
+```
+DELETE http://localhost:5000/api/dogs/{id}
+```
+
+#### DELETE Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| dogId | int | none | true | Assigned Id to animal.
+
+#### Example DELETE request:
+```
+http://localhost:5000/api/dogs/11/
+```
+
+#### Sample DELETE Response:
+```
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+
+
 
 ## Known Bugs
 
